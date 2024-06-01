@@ -8,12 +8,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
-    ImageView image;
-    TextView text;
+    ImageView iThumbnail;
+    TextView iTitle,iDescription,iCategory,iPrice,iBrand,iWarranty;
     public MyViewHolder(@NonNull View itemView) {
         super(itemView);
 
-        image=itemView.findViewById(R.id.ivImage);
-        text=itemView.findViewById(R.id.tvTitle);
+        iThumbnail=itemView.findViewById(R.id.item_thumbnail);
+        iDescription=itemView.findViewById(R.id.item_description);
+        iCategory=itemView.findViewById(R.id.item_category);
+        iBrand=itemView.findViewById(R.id.item_brand);
+        iPrice=itemView.findViewById(R.id.item_price);
+        iWarranty=itemView.findViewById(R.id.item_warranty);
+        iTitle=itemView.findViewById(R.id.item_title);
+
     }
 }

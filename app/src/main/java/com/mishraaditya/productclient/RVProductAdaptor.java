@@ -23,15 +23,21 @@ public class RVProductAdaptor extends RecyclerView.Adapter<MyViewHolder> {
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.product_item,parent,false));
+        return new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.market_item,parent,false));
     }
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        holder.text.setText(productList.get(position).getTitle());
+        holder.iTitle.setText(productList.get(position).getTitle());
+        holder.iDescription.setText(productList.get(position).getDescription());
+        holder.iWarranty.setText(productList.get(position).getWarranty());
+        holder.iPrice.setText(String.valueOf(productList.get(position).getPrice()));
+        holder.iBrand.setText(String.valueOf(productList.get(position).getPrice()));
+        holder.iCategory.setText(productList.get(position).getCategory());
         Glide.with(context).load(productList.get(position).getThumbnail()).
-                placeholder(R.drawable.baseline_360).error(R.drawable.ic_launcher_foreground).into(holder.image);
-
+                placeholder(R.drawable.baseline_360).error(R.drawable.ic_launcher_foreground).into(holder.iThumbnail);
+        //Unique Id Assigned for Further Actions.
+        holder.itemView.setTag(productList.get(position).getId());
     }
 
     @Override

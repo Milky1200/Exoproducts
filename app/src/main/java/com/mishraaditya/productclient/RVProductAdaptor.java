@@ -29,7 +29,7 @@ public class RVProductAdaptor extends RecyclerView.Adapter<MyViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         holder.text.setText(productList.get(position).getTitle());
-        Glide.with(context).load(productList.get(position).getProdImage()).
+        Glide.with(context).load(productList.get(position).getThumbnail()).
                 placeholder(R.drawable.baseline_360).error(R.drawable.ic_launcher_foreground).into(holder.image);
 
     }

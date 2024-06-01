@@ -7,5 +7,5 @@ import retrofit2.http.GET;
 
 public interface API {
     @GET("products")
-    Call<List<ProductModel>> getProducts();
+    Call<ProductResponse> getProducts();
 }

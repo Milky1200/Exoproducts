@@ -21,6 +21,7 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
+    ProductResponse productResponse;
     List<ProductModel> productModels;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,21 +39,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void getProds() {
-        Call<List<ProductModel>> call=RetrofitClient.getInstance().getApi().getProducts();
-        call.enqueue(new Callback<List<ProductModel>>() {
+        Call<ProductResponse> call=RetrofitClient.getInstance().getApi().getProducts();
+        call.enqueue(new Callback<ProductResponse>() {
             @Override
-            public void onResponse(Call<List<ProductModel>> call, Response<List<ProductModel>> response) {
-                productModels=response.body();
+            public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
+                productResponse=response.body();
                 if(response.isSuccessful()){
                     Toast.makeText(MainActivity.this,"Got Products",Toast.LENGTH_SHORT).show();
+                    productModels=productResponse.getProducts();
                     setMyAdaptor();
                 }
                 else{
-                    Toast.makeText(MainActivity.this,"Failed In SuccessResponse",Toast.LENGTH_LONG).show();
+                    Toast.makeText(MainActivity.this,"Failed In SuccessResponse: "+response.message(),Toast.LENGTH_LONG).show();
+                    Log.e("Mishraaditya","OnFailure: "+ response);
                 }
             }
             @Override
-            public void onFailure(Call<List<ProductModel>> call, Throwable throwable) {
+            public void onFailure(Call<ProductResponse> call, Throwable throwable) {
                 Toast.makeText(MainActivity.this,"Failed in OnFailure: "+throwable.getMessage(),Toast.LENGTH_LONG).show();
                 Log.e("Mishraaditya","OnFailure: "+ throwable.getMessage());
             }

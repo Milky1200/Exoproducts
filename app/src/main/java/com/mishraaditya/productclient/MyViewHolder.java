@@ -5,14 +5,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MyViewHolder extends RecyclerView.ViewHolder {
     ImageView iThumbnail;
+    AppCompatButton btnAddToCart;
     TextView iTitle,iDescription,iCategory,iPrice,iBrand,iWarranty;
     public MyViewHolder(@NonNull View itemView) {
         super(itemView);
 
+        btnAddToCart=itemView.findViewById(R.id.addItem);
         iThumbnail=itemView.findViewById(R.id.item_thumbnail);
         iDescription=itemView.findViewById(R.id.item_description);
         iCategory=itemView.findViewById(R.id.item_category);

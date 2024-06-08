@@ -1,10 +1,11 @@
-package com.mishraaditya.productclient;
+package com.mishraaditya.productclient.Dashboars;
 
 import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
 public class ProductModel {
+
     @SerializedName("id")
     int id;
     @SerializedName("title")
@@ -21,10 +22,15 @@ public class ProductModel {
     String warranty;
     @SerializedName("thumbnail")
     String thumbnail;
-    @SerializedName("images")
-    List<String> prodImages;
 
-    public ProductModel(int id, String title, String description, String category, int price, String brand, String warranty, String thumbnail, List<String> prodImages) {
+    /*@SerializedName("images")
+    List<String> prodImages;*/
+
+    @SerializedName("stocks")
+    int quantity;
+
+    public ProductModel(int id, String title,
+                        String description, String category, int price, String brand, String warranty, String thumbnail,int quantity) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -33,7 +39,17 @@ public class ProductModel {
         this.brand = brand;
         this.warranty = warranty;
         this.thumbnail = thumbnail;
-        this.prodImages = prodImages;
+        //this.prodImages = prodImages;
+        this.quantity=quantity;
+    }
+
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
     }
 
     public int getId() {
@@ -100,11 +116,11 @@ public class ProductModel {
         this.thumbnail = thumbnail;
     }
 
-    public List<String> getProdImages() {
+    /*public List<String> getProdImages() {
         return prodImages;
     }
 
     public void setProdImages(List<String> prodImages) {
         this.prodImages = prodImages;
-    }
+    }*/
 }

@@ -19,6 +19,10 @@ public interface CartDao {
     List<CartProductModel> getAllProductFromCart();
     @Query("SELECT * FROM CartTable WHERE pid LIKE :id")
     CartProductModel getProductById(int id);
+
+    @Query("SELECT EXISTS(SELECT * FROM carttable WHERE pid=:id)")
+    Boolean isExits(int id);
+
     @Query("UPDATE CartTable SET quantity=:currQuantity WHERE pid LIKE:id")
     void updateProductQuantity(int id,int currQuantity);
     @Query("DELETE FROM CartTable WHERE pid LIKE:id")

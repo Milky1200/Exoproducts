@@ -1,6 +1,9 @@
 package com.mishraaditya.productclient;
 
+import static com.mishraaditya.productclient.Dashboars.MainActivity.ID_TAG;
+
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,14 +12,18 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.mishraaditya.productclient.Dashboars.ProductModel;
 
+import java.security.PublicKey;
 import java.util.List;
 
 public class RVProductAdaptor extends RecyclerView.Adapter<MyViewHolder> {
     Context context;
     String priceL;
+
     int ind;
     List<ProductModel> productList;
+    List<CartProductModel> cartItems;
 
     public RVProductAdaptor(Context context, List<ProductModel> productList) {
         this.context = context;
@@ -42,11 +49,55 @@ public class RVProductAdaptor extends RecyclerView.Adapter<MyViewHolder> {
         Glide.with(context).load(productList.get(position).getThumbnail()).
                 placeholder(R.drawable.baseline_360).
                 error(R.drawable.ic_launcher_foreground).into(holder.iThumbnail);
+        CartProductModel loadCartProduct=new CartProductModel(productList.get(position));
+        holder.btnAddToCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.e("ButtonPressed", "onClick: Start" );
+                Thread inTread=new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            if(CartDataBase.getInstance(context).cartDao().isExits(loadCartProduct.getId())){
+                                Log.d("Mishraaditya Room", "Found " +loadCartProduct.getId());
+                                ind=CartDataBase.getInstance(context).cartDao().getProductById(loadCartProduct.getId()).getQuantity();
+                                loadCartProduct.setQuantity(ind+1);
+                                CartDataBase.getInstance(context).cartDao().updateProductQuantity(loadCartProduct.getId(),loadCartProduct.getQuantity());
 
-        //Unique Id Assigned for Further Actions.
-        holder.itemView.setTag(productList.get(position).getId());
+                            }else {
+                                loadCartProduct.setQuantity(1);
+                                CartDataBase.getInstance(context).cartDao().AddToCart(loadCartProduct);
+                                Log.d("Mishraaditya Room", "Not Found " +loadCartProduct.getId());
+                            }
+                            Log.d("Mishraaditya Room", "run: Prod has been inserted..." +loadCartProduct.getId());
+                        }catch (RuntimeException re){
+                            Log.d("Mishraaditya Room", "Catch :<<");
+                        }
+                    }
+                });
+                inTread.start();
+                Thread feThread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            cartItems=CartDataBase.getInstance(context).cartDao().getAllProductFromCart();
+                            for(CartProductModel item:cartItems){
+                                Log.d("Mishraaditya Room", "run: Prod has been Loaded..." + item.toString());
+                            }
+                        }catch (RuntimeException re){
+                            Log.d("Mishraaditya Room", "Catch :-->>");
+                        }
+                    }
+                });
+                while (true) {
+                    if(!inTread.isAlive()){
+                        feThread.start();
+                        break;
+                    }
+                }
 
-
+            }
+        });
     }
 
     @Override

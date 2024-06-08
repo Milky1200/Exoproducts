@@ -5,6 +5,8 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import com.mishraaditya.productclient.Dashboars.ProductModel;
+
 import java.util.List;
 
 @Entity(tableName = "CartTable")
@@ -44,6 +46,18 @@ public class CartProductModel {
         this.thumbnail = thumbnail;
 
         this.quantity = quantity;
+    }
+
+    public CartProductModel(ProductModel productModel){
+        this.id = productModel.getId();
+        this.title = productModel.getTitle();
+        this.description = productModel.getDescription();;
+        this.category = productModel.getCategory();;
+        this.price = productModel.getPrice();
+        this.brand = productModel.getBrand();
+        this.warranty = productModel.getWarranty();
+        this.thumbnail = productModel.getThumbnail();
+        this.quantity = 0;
     }
 
     public int getId() {

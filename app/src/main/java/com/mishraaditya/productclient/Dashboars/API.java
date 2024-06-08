@@ -1,6 +1,4 @@
-package com.mishraaditya.productclient;
-
-import java.util.List;
+package com.mishraaditya.productclient.Dashboars;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

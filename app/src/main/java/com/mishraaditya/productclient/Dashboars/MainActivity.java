@@ -1,8 +1,10 @@
-package com.mishraaditya.productclient;
+package com.mishraaditya.productclient.Dashboars;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
@@ -13,6 +15,12 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.mishraaditya.productclient.CartActivity;
+import com.mishraaditya.productclient.CartDataBase;
+import com.mishraaditya.productclient.CartProductModel;
+import com.mishraaditya.productclient.R;
+import com.mishraaditya.productclient.RVProductAdaptor;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -22,6 +30,8 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
+    ImageButton gotoCart;
+    public final static int ID_TAG=899;
     ProductResponse productResponse;
     List<ProductModel> productModels;
     @Override
@@ -36,11 +46,20 @@ public class MainActivity extends AppCompatActivity {
         });
 
         recyclerView=findViewById(R.id.rvProducts);
+        gotoCart=findViewById(R.id.gotoCartBtn);
         getProds();
+
+        gotoCart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent=new Intent(MainActivity.this, CartActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 
     private void getProds() {
-        Call<ProductResponse> call=RetrofitClient.getInstance().getApi().getProducts();
+        Call<ProductResponse> call= RetrofitClient.getInstance().getApi().getProducts();
         call.enqueue(new Callback<ProductResponse>() {
             @Override
             public void onResponse(Call<ProductResponse> call, Response<ProductResponse> response) {
@@ -49,45 +68,6 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(MainActivity.this,"Got Products",Toast.LENGTH_SHORT).show();
                     productModels=productResponse.getProducts();
                     setMyAdaptor();
-
-                        /*
-                            CartProductModel newCartItem=new CartProductModel(productList.get(ind).getId(),
-                                    productList.get(ind).getTitle(),
-                                    productList.get(ind).getDescription(),
-                                    productList.get(ind).getCategory(),
-                                    productList.get(ind).getPrice(),
-                                    productList.get(ind).getBrand(),
-                                    productList.get(ind).getWarranty(),
-                                    productList.get(ind).getThumbnail(),
-                                    1);
-
-
-
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            CartProductModel newCartItem=new CartProductModel(1,"title","Descriptiono","Catego",
-                                    9899.00,"Bran","warr","thumb",1);
-                            CartDataBase.getInstance(MainActivity.this).cartDao().AddToCart(newCartItem);
-
-
-                            Log.d("Mishraaditya", "run: Prod has been inserted...");
-                        }
-                    }).start();
-
-                         */
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            CartProductModel newCartItem=CartDataBase.getInstance(MainActivity.this).cartDao().getProductById(1);
-
-                            Log.d("Roomtbs", "run: "+newCartItem);
-                            Log.d("Mishraaditya", "run: Prod has been inserted...");
-                        }
-                    }).start();
-
-
-
                 }
                 else{
                     Toast.makeText(MainActivity.this,"Failed In SuccessResponse: "+response.message(),Toast.LENGTH_LONG).show();

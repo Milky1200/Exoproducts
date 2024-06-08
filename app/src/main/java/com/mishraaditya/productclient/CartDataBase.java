@@ -19,6 +19,7 @@ public abstract class CartDataBase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     CartDataBase.class, "Cart_DB")
+                            .allowMainThreadQueries()
                             .build();
                 }
             }

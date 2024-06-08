@@ -1,7 +1,5 @@
 package com.mishraaditya.productclient;
 
-import static com.mishraaditya.productclient.Dashboars.MainActivity.ID_TAG;
-
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -12,9 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.mishraaditya.productclient.Dashboars.ProductModel;
 
-import java.security.PublicKey;
 import java.util.List;
 
 public class RVProductAdaptor extends RecyclerView.Adapter<MyViewHolder> {

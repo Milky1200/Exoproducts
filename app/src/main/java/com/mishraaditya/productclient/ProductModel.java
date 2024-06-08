@@ -1,4 +1,4 @@
-package com.mishraaditya.productclient.Dashboars;
+package com.mishraaditya.productclient;
 
 import com.google.gson.annotations.SerializedName;
 

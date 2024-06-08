@@ -1,16 +1,15 @@
 package com.mishraaditya.productclient;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
-import com.mishraaditya.productclient.Dashboars.ProductModel;
-
-import java.util.List;
-
 @Entity(tableName = "CartTable")
-public class CartProductModel {
+public class CartProductModel implements Parcelable {
     @NonNull
     @PrimaryKey
     @ColumnInfo(name = "pid")
@@ -146,6 +145,47 @@ public class CartProductModel {
                 ", thumbnail='" + thumbnail + '\'' +
                 ", quantity=" + quantity +
                 '}';
+    }
+
+    protected CartProductModel(Parcel in) {
+        id=in.readInt();
+        title = in.readString();
+        description = in.readString();
+        category = in.readString();
+        price = in.readDouble();
+        brand = in.readString();
+        warranty = in.readString();
+        thumbnail = in.readString();
+        quantity = in.readInt();
+    }
+
+    public static final Creator<CartProductModel> CREATOR = new Creator<CartProductModel>() {
+        @Override
+        public CartProductModel createFromParcel(Parcel in) {
+            return new CartProductModel(in);
+        }
+
+        @Override
+        public CartProductModel[] newArray(int size) {
+            return new CartProductModel[size];
+        }
+    };
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(title);
+        dest.writeString(description);
+        dest.writeString(category);
+        dest.writeDouble(price);
+        dest.writeString(brand);
+        dest.writeString(warranty);
+        dest.writeString(thumbnail);
+        dest.writeInt(quantity);
     }
 }
 

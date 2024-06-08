@@ -1,7 +1,7 @@
-package com.mishraaditya.productclient.Dashboars;
+package com.mishraaditya.productclient;
 
 import com.google.gson.annotations.SerializedName;
-import com.mishraaditya.productclient.Dashboars.ProductModel;
+import com.mishraaditya.productclient.ProductModel;
 
 import java.util.List;
 

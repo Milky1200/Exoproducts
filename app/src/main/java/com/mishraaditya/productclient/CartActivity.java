@@ -13,16 +13,16 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.mishraaditya.productclient.Dashboars.MainActivity;
-
+import java.util.ArrayList;
 import java.util.List;
 
 public class CartActivity extends AppCompatActivity {
 
     RecyclerView cartRecyclerView;
-    List<CartProductModel> cartList;
+    List<CartProductModel> cartList = new ArrayList<>();
 
     TextView totalAmount;
+    ArrayList<CartProductModel> arrayCart;
     ShoppingCartAdapter adapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,8 +36,19 @@ public class CartActivity extends AppCompatActivity {
         });
         cartRecyclerView=findViewById(R.id.cartRecycler);
         totalAmount=findViewById(R.id.total_amount);
+        arrayCart = getIntent().getParcelableArrayListExtra("item_list");
+        Log.e("myCartDB ", "onCreate: Inside Cart Act" );
+        for (CartProductModel item:arrayCart){
+            Log.d("myCartDB ", "onCreate: "+item.toString());
+            cartList.add(item);
+        }
+        for (CartProductModel item:cartList){
+            Log.d("myCartDBList ", "onCreate: "+item.toString());
+        }
+        //Log.d("myCartDB ", "onCreate: "+cartList.toString());
+        setMyAdaptor(cartList);
 
-        Thread feThread = new Thread(new Runnable() {
+        /*Thread feThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
@@ -63,8 +74,20 @@ public class CartActivity extends AppCompatActivity {
                     updateTotalAmount();
                 }
             }
+        }*/
+    }
+
+    private void setMyAdaptor(List<CartProductModel> cartList) {
+        if(cartList.isEmpty()){
+            Toast.makeText(CartActivity.this,"No Items is in DB",Toast.LENGTH_LONG).show();
+        }else {
+            cartRecyclerView.setLayoutManager(new LinearLayoutManager(CartActivity.this));
+            ShoppingCartAdapter adaptor=new ShoppingCartAdapter(cartList,CartActivity.this,totalAmount);
+            cartRecyclerView.setAdapter(adaptor);
+            updateTotalAmount();
         }
     }
+
     private void updateTotalAmount() {
         int total = 0;
         for (CartProductModel item : cartList) {

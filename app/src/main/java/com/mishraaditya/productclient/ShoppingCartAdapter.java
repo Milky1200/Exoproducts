@@ -13,13 +13,14 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapter.ItemViewHolder> {
 
-    private List<CartProductModel> itemList;
+    private List<CartProductModel> itemList = new ArrayList<>();
     private Context context;
-
+    String priceL;
     TextView totalPrice;
 
 
@@ -32,18 +33,20 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     @NonNull
     @Override
     public ItemViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.cart_item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.cart_item, parent, false);
         return new ItemViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         CartProductModel item = itemList.get(position);
-
         // Bind data to the views
         holder.title.setText(item.getTitle());
         holder.category.setText(item.getCategory());
-        holder.price.setText(String.format("$%d", item.getPrice()));
+        priceL=String.valueOf(itemList.get(position).getPrice());
+        priceL="$"+priceL;
+        holder.price.setText(priceL);
+        //holder.price.setText(String.format("$%d", item.getPrice()));
         holder.brand.setText(item.getBrand());
         holder.warranty.setText(item.getWarranty());
         holder.description.setText(item.getDescription());

@@ -20,7 +20,7 @@ public class CartActivity extends AppCompatActivity {
 
     RecyclerView cartRecyclerView;
     List<CartProductModel> cartList = new ArrayList<>();
-
+    int random;
     TextView totalAmount;
     ArrayList<CartProductModel> arrayCart;
     ShoppingCartAdapter adapter;
@@ -88,11 +88,15 @@ public class CartActivity extends AppCompatActivity {
         }
     }
 
+    String priceL;
     private void updateTotalAmount() {
-        int total = 0;
+        double total = 0;
         for (CartProductModel item : cartList) {
             total += item.getPrice() * item.getQuantity();
         }
-        totalAmount.setText(String.format("Total: $%d", total));
+        random= (int) total;
+        priceL=String.valueOf(random);
+        priceL="$"+priceL;
+        totalAmount.setText(priceL);
     }
 }

@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
         gotoCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getCartProds();
                 Intent intent = new Intent(MainActivity.this, CartActivity.class);
                 intent.putParcelableArrayListExtra("item_list", cartModels);
                 startActivity(intent);

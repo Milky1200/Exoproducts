@@ -1,12 +1,14 @@
 package com.mishraaditya.productclient;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +24,7 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     private Context context;
     String priceL;
     TextView totalPrice;
+    int random;
 
 
     public ShoppingCartAdapter(List<CartProductModel> itemList, Context context, TextView totalPrice) {
@@ -59,17 +62,76 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
 
         holder.buttonAdd.setOnClickListener(v -> {
             int quantity = item.getQuantity();
+            itemList.remove(item);
             item.setQuantity(quantity + 1);
             holder.quantity.setText(String.valueOf(item.getQuantity()));
+            itemList.add(item);
             notifyDataSetChanged();
+            updateTotalAmount();
+
+            Thread inTread=new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        CartDataBase.getInstance(context).cartDao().updateProductQuantity(item.getId(), item.getQuantity());
+                        //Log.d("Mishraaditya Room", "run: Prod has been inserted..." +loadCartProduct.getId());
+                    }catch (RuntimeException re){
+                        Log.d("Mishraaditya Room", "Catch :<<");
+                    }
+                }
+            });
+            inTread.start();
         });
 
         holder.buttonSubtract.setOnClickListener(v -> {
             int quantity = item.getQuantity();
             if (quantity > 1) {
+                itemList.remove(item);
                 item.setQuantity(quantity - 1);
                 holder.quantity.setText(String.valueOf(item.getQuantity()));
+                itemList.add(item);
                 notifyDataSetChanged();
+                updateTotalAmount();
+
+                Thread inTread=new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            if(CartDataBase.getInstance(context).cartDao().isExits(item.getId())){
+                                if(item.getQuantity()<=0){
+                                    CartDataBase.getInstance(context).cartDao().deleteProductFromCart(item.getId());
+                                }else {
+                                    CartDataBase.getInstance(context).cartDao().updateProductQuantity(item.getId(), item.getQuantity());
+                                }
+                            }
+                            //Log.d("Mishraaditya Room", "run: Prod has been inserted..." +loadCartProduct.getId());
+                        }catch (RuntimeException re){
+                            Log.d("Mishraaditya Room", "Catch :<<");
+                        }
+                    }
+                });
+                inTread.start();
+            }else{
+                //item.setQuantity(quantity - 1);
+                itemList.remove(item);
+                Toast.makeText(context,"Item Deleted: "+item.getTitle().toString(),Toast.LENGTH_LONG).show();
+                notifyDataSetChanged();
+                updateTotalAmount();
+                Thread inTread=new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            if(CartDataBase.getInstance(context).cartDao().isExits(item.getId())){
+                                CartDataBase.getInstance(context).cartDao().deleteProductFromCart(item.getId());
+                                Log.e("Mishraaditya Room", "run: Prod has been Deleted..." +item.getId());
+                            }
+                            //Log.d("Mishraaditya Room", "run: Prod has been inserted..." +loadCartProduct.getId());
+                        }catch (RuntimeException re){
+                            Log.d("Mishraaditya Room", "Catch :<<");
+                        }
+                    }
+                });
+                inTread.start();
             }
         });
     }
@@ -97,6 +159,17 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
             buttonAdd = itemView.findViewById(R.id.button_add);
             buttonSubtract = itemView.findViewById(R.id.button_subtract);
         }
+    }
+
+    private void updateTotalAmount() {
+        double total = 0;
+        for (CartProductModel item : itemList) {
+            total += item.getPrice() * item.getQuantity();
+        }
+        random=(int)total;
+        priceL=String.valueOf(random);
+        priceL="$"+priceL;
+        totalPrice.setText(priceL);
     }
 
 }

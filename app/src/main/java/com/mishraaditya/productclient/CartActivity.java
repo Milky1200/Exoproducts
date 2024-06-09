@@ -82,7 +82,7 @@ public class CartActivity extends AppCompatActivity {
             Toast.makeText(CartActivity.this,"No Items is in DB",Toast.LENGTH_LONG).show();
         }else {
             cartRecyclerView.setLayoutManager(new LinearLayoutManager(CartActivity.this));
-            ShoppingCartAdapter adaptor=new ShoppingCartAdapter(cartList,CartActivity.this,totalAmount);
+            ShoppingCartAdapter adaptor=new ShoppingCartAdapter(cartList,CartActivity.this,totalAmount,cartRecyclerView);
             cartRecyclerView.setAdapter(adaptor);
             updateTotalAmount();
         }

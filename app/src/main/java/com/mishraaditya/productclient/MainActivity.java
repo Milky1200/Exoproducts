@@ -26,6 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
     RecyclerView recyclerView;
     ImageButton gotoCart;
+
+    Thread feThread;
     public final static int ID_TAG=899;
     ProductResponse productResponse;
     List<ProductModel> productModels;
@@ -49,15 +51,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 getCartProds();
-                Intent intent = new Intent(MainActivity.this, CartActivity.class);
-                intent.putParcelableArrayListExtra("item_list", cartModels);
-                startActivity(intent);
+                while (true) {
+                    if(!feThread.isAlive()) {
+                        Intent intent = new Intent(MainActivity.this, CartActivity.class);
+                        intent.putParcelableArrayListExtra("item_list", cartModels);
+                        startActivity(intent);
+                        break;
+                    }
+                }
             }
         });
     }
 
     private void getCartProds() {
-        Thread feThread = new Thread(new Runnable() {
+          feThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {

@@ -58,10 +58,10 @@ public class RVProductAdaptor extends RecyclerView.Adapter<MyViewHolder> {
                         try {
                             if(CartDataBase.getInstance(context).cartDao().isExits(loadCartProduct.getId())){
                                 Log.d("Mishraaditya Room", "Found " +loadCartProduct.getId());
-                                ind=CartDataBase.getInstance(context).cartDao().getProductById(loadCartProduct.getId()).getQuantity();
+                                /*ind=CartDataBase.getInstance(context).cartDao().getProductById(loadCartProduct.getId()).getQuantity();
                                 loadCartProduct.setQuantity(ind+1);
                                 CartDataBase.getInstance(context).cartDao().updateProductQuantity(loadCartProduct.getId(),loadCartProduct.getQuantity());
-
+                                */
                             }else {
                                 loadCartProduct.setQuantity(1);
                                 CartDataBase.getInstance(context).cartDao().AddToCart(loadCartProduct);
@@ -74,7 +74,7 @@ public class RVProductAdaptor extends RecyclerView.Adapter<MyViewHolder> {
                     }
                 });
                 inTread.start();
-                Thread feThread = new Thread(new Runnable() {
+                /*Thread feThread = new Thread(new Runnable() {
                     @Override
                     public void run() {
                         try {
@@ -92,7 +92,7 @@ public class RVProductAdaptor extends RecyclerView.Adapter<MyViewHolder> {
                         feThread.start();
                         break;
                     }
-                }
+                }*/
 
             }
         });

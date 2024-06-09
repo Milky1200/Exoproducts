@@ -24,13 +24,15 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
     private Context context;
     String priceL;
     TextView totalPrice;
+    RecyclerView recyclerView;
     int random;
 
 
-    public ShoppingCartAdapter(List<CartProductModel> itemList, Context context, TextView totalPrice) {
+    public ShoppingCartAdapter(List<CartProductModel> itemList, Context context, TextView totalPrice,RecyclerView recyclerView) {
         this.itemList = itemList;
         this.context = context;
         this.totalPrice=totalPrice;
+        this.recyclerView=recyclerView;
     }
 
     @NonNull
@@ -62,11 +64,13 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
 
         holder.buttonAdd.setOnClickListener(v -> {
             int quantity = item.getQuantity();
-            itemList.remove(item);
+            //itemList.remove(item);
             item.setQuantity(quantity + 1);
             holder.quantity.setText(String.valueOf(item.getQuantity()));
-            itemList.add(item);
+            itemList.get(position).setQuantity(item.getQuantity());
+            //itemList.add(item);
             notifyDataSetChanged();
+            recyclerView.scrollToPosition(position);
             updateTotalAmount();
 
             Thread inTread=new Thread(new Runnable() {
@@ -86,11 +90,13 @@ public class ShoppingCartAdapter extends RecyclerView.Adapter<ShoppingCartAdapte
         holder.buttonSubtract.setOnClickListener(v -> {
             int quantity = item.getQuantity();
             if (quantity > 1) {
-                itemList.remove(item);
+                //itemList.remove(item);
                 item.setQuantity(quantity - 1);
                 holder.quantity.setText(String.valueOf(item.getQuantity()));
-                itemList.add(item);
+                itemList.get(position).setQuantity(item.getQuantity());
+                //itemList.add(item);
                 notifyDataSetChanged();
+                recyclerView.scrollToPosition(position);
                 updateTotalAmount();
 
                 Thread inTread=new Thread(new Runnable() {

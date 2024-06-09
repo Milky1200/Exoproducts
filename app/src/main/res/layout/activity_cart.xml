@@ -26,9 +26,10 @@
             android:id="@+id/total_amount"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
             android:layout_weight="1"
-            android:text="Total: $0"
-            android:textSize="18sp"
+            android:text="Total: $04"
+            android:textSize="22sp"
             android:textColor="@android:color/holo_green_dark"
             android:textStyle="bold" />
 

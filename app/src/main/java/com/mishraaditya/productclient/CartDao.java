@@ -28,4 +28,8 @@ public interface CartDao {
     void updateProductQuantity(int id,int currQuantity);
     @Query("DELETE FROM CartTable WHERE pid LIKE:id")
     void deleteProductFromCart(int id);
+
+
+    @Query("DELETE FROM CartTable")
+    void deleteAllProduct();
 }
